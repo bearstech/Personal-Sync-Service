@@ -1,0 +1,116 @@
+= English
+
+Proof of concept of a contact synchronizer from a private server to android
+
+== INSTALL ==
+
+(context .../PersonalSyncAdapter)
+
+1/ compile the java application using eclipse (and the android SDK)
+
+2/ send the application using 'adb install PersonalSync/bin/PersonalSync.apk'
+
+(context .../personal_sync_server)
+
+3/ launch 'python get_contacts_from_vcf.py contact_list.vcf' to update/create a database with a vcf file
+3.1/ enter a login and a password (that will be used by android to connect to the server)
+
+4/ launch 'python personalSyncServer.py' (using your root account, because it needs the :80 port. But you can integrate it to your favorite webserver, because it's only wsgi using bottle.py)
+
+5/ in your android phone (>2.0), get into settings -> account & sync -> add account -> personal sync
+
+6/ enter your username and password as entered in 4.1/ and use the IP address of the server where personalSyncServer.py is running
+
+7/ click on the account whose name is the login you entered in 4.1/ and press 'sync contacts'
+
+Once syncronization is ended, get into 'contacts', open the menu, inside 'Display options' open the matching account and put 'All contacts' to checked.
+
+and then watch inside Contacts, you shall have all your contacts synchronized.
+
+= French =
+
+Syncronisateur des contacts vers android (Proof Of Concept)
+
+== INSTALLATION ==
+
+1/ compiler l'application à l'aide d'eclipse
+
+2/ envoyer l'application à l'aide de adb install PersonalSync/bin/PersonalSync.apk 
+
+3/ lancer 'python get_contacts_from_vcf.py liste_contacts.vcf' pour mettre à jour la base de données avec un fichier vcf afin de créer ou mettre à jour la base de données
+3.1/ entrer un login et un mot de passe (qui sera utilisé par android pour se connecter au serveur)
+
+4/ lancer 'python personalSyncServer.py' (en root, car il faut le lancer sur le port 80, ou sinon l'intégrer à apache, c'est du wsgi avec bottle.py)
+
+5/ aller sous android (>2.0) dans Settings -> Accounts & Sync -> Add account -> Personal Sync
+
+6/ entrer username  / password tels que donnés en 4.1/
+
+7/ cliquer ensuite sur le compte dont le nom est l'identifiant entré en 4.1/ et puis sur 'Sync Contacts'
+
+une fois la synchronisation terminée (les flèches arrêtent de tourner), aller dans 'contacts',
+ouvrir le menu choisir 'Display options' ouvrir le compte correspondant et mettre à vrai 'All Contacts'
+
+enfin, retournez dans Contacts et tous les ours ont leur téléphone, email, nom et poste de défini.
+
+= TODO =
+
+milestone #1
+
+ - add a backend db to the synchronizer : DONE
+ - improve the stored data management on the phone (ie support all fields) : DONE
+ - modify the syncadapter to support upstream updated from phone to server : Work In Progress
+ - release the code as a upstream/dowsstream SyncAdapter example
+
+milestone #2
+
+ - be able to specify the IP address of the server from within the synchronizer : DONE
+    - be able to modify that IP once the account is configured (cf milestone #3)
+ - implement an observer pattern to trigger regularly server-side synchronizers (dict of fonctors) so we can have
+    - a synchronizer with a wiki page : DONE
+    - a synchronizer with a VCF file : DONE
+    - a synchronizer with Contacts and calendar server
+    - a synchronizer compatible with ActiveSync
+    - a synchronizer with GMail/Yahoo/...
+    - a direct synchronizer with addressbook.app/evolution/... client
+ - do the server-side synchronizers so they are pluggable using an entrypoint definition with setuptools
+    - cf https://bitbucket.org/bbangert/beaker/src/251c42a5f849/beaker/cache.py
+ - launch bottle.py with SSL enabled (if it is possible)
+
+milestone #3
+
+ - create a configuration interface of the server
+    - to configure from the phone server-side synchronizers with other services
+ - package the whole, create tests and a distribution
+
+
+== LICENSES ==
+
+This project aims to provide a SyncAdapter and a matching Server 
+so you can manage and sync your contacts yourself
+
+
+All Java code is under Apache License, as it is based on the SyncAdapterSample as provided by Google on :
+http://developer.android.com/resources/samples/SampleSyncAdapter/index.html
+
+
+This package includes bottle.py, under MIT License, Copyright (c) 2009, Marcel Hellkamp.
+see source file for License.
+
+
+All original Python code work is Copyright (C) 2011, Bernard `Guyzmo` Pratz, bpratz{at}bearstech{dot}com
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
